@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+###
+
+require "time"
+require "thor"
+require "open-uri"
+require "dotenv"
+
+Dotenv.load
+
+class SetupGenerator < Thor::Group
+  include Thor::Actions
+
+  argument :year
+  argument :day
+
+  def self.source_root
+    File.expand_path("../", __FILE__)
+  end
+
+  def generate
+    create_file("input/#{date_path}.txt", force: true) { get_input }
+    create_file("lib/#{date_path}.rb", skip: true) { "" }
+    template("../templates/spec/tmpl_spec.rb.tt", "spec/#{date_path}_spec.rb")
+  end
+
+  def get_puzzle
+    # TODO: AOC doesn't like this request...input works fine.
+    URI.open("https://adventofcode.com/#{year}/day/#{day}", headers).read
+  end
+
+  def get_input
+    URI.open("https://adventofcode.com/#{year}/day/#{day}/input", headers).read
+  end
+
+  def headers
+    @headers ||= {"Cookie" => ENV.fetch("AOC_COOKIE") { "asdf" }}
+  end
+
+  def date_path
+    "#{year}/#{day.to_s.rjust(2, "0")}"
+  end
+end
+
+default_date = Time.new
+year = ARGV[0] || default_date.year
+day = ARGV[1] || default_date.day
+
+puts "❗ Generating setup for #{year} Day #{day}"
+SetupGenerator.start([year, day])
+puts "✅ Generated"

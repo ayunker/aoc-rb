@@ -1,0 +1,23 @@
+require "spec_helper"
+
+RSpec.describe "Day <%= day %>: Title" do
+  # let(:runner) { Runner.new("<%= day %>") }
+  let(:input) do
+    <<~TXT
+    TXT
+  end
+
+  context "test input" do
+    describe "Part One" do
+    end
+
+    describe "Part Two" do
+    end
+  end
+
+  describe "Part One" do
+  end
+
+  describe "Part Two" do
+  end
+end
