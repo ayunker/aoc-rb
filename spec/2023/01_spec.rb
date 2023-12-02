@@ -14,12 +14,14 @@ RSpec.describe "Day 1: Title" do
   describe "Part One" do
     it "is correct" do
       expect(day_mod.part1).to eq 54634
+      expect(day_mod.part1_alt).to eq 54634
     end
   end
 
   describe "Part Two" do
     it "is correct" do
       expect(day_mod.part2).to eq 53855
+      expect(day_mod.part2_alt).to eq 53855
     end
   end
 end

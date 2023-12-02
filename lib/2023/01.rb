@@ -17,29 +17,20 @@ module Day01
       .reduce(:+)
   end
 
+  def part1_alt(override: nil)
+    (override || input)
+      .map { |x| (x[x.index(/\d/)].to_i * 10) + x[x.rindex(/\d/)].to_i }
+      .reduce(:+)
+  end
+
   def part2
     transformed = input.each { |i| Day01.string_to_nums.each { |k, v| i.gsub!(k, v) } }
     part1(override: transformed)
+  end
 
-    # updated_input = input.map do |x|
-    #   x.split(/(\d)/).map do |y|
-    #     if y.match?(/\d/)
-    #       y
-    #     else
-    #       y.gsub(reg).to_a.map { |z| string_to_nums[z] }
-    #     end
-    #   end
-    # end
-    #
-    # updated_input.each do |x|
-    #   puts x
-    # end
-    #
-    # updated_input
-    #   .map { |x| x.flatten }
-    #   .map { |x| x.map(&:to_i) }
-    #   .map { |x| (x.first * 10) + x.last }
-    #   .reduce(:+)
+  def part2_alt
+    transformed = input.each { |i| Day01.string_to_nums.each { |k, v| i.gsub!(k, v) } }
+    part1_alt(override: transformed)
   end
 
   def reg
