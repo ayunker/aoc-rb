@@ -1,5 +1,3 @@
-# require "spec_helper"
-
 require "./lib/2023/01"
 
 RSpec.describe "Day 1: Title" do

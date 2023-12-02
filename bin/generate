@@ -47,6 +47,6 @@ default_date = Time.new
 year = ARGV[0] || default_date.year
 day = ARGV[1] || default_date.day
 
-puts "❗ Generating setup for #{year} Day #{day}"
+puts "🎄 Generating setup for #{year} Day #{day}"
 SetupGenerator.start([year, day])
 puts "✅ Generated"
