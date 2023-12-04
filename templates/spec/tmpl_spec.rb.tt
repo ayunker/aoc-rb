@@ -1,4 +1,4 @@
-require "./lib/<%= year =>/<%= day.to_s.rjust(2, "0") %>"
+require "./lib/<%= year %>/<%= day.to_s.rjust(2, "0") %>"
 
 RSpec.describe "Day <%= day %>: Title" do
   let(:day_mod) { Object.const_get("Day<%= day.to_s.rjust(2, "0") %>") }
