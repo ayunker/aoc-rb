@@ -1,0 +1,17 @@
+module Day<%= day.to_s.rjust(2, "0") %>
+  module_function
+
+  def input
+    File.readlines("./input/<%= year %>/<%= day.to_s.rjust(2, "0") %>.txt", chomp: true)
+  end
+
+  def test_input
+    File.readlines("./input/<%= year %>/<%= day.to_s.rjust(2, "0") %>-test.txt", chomp: true)
+  end
+
+  def part1
+  end
+
+  def part2
+  end
+end

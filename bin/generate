@@ -21,7 +21,8 @@ class SetupGenerator < Thor::Group
 
   def generate
     create_file("input/#{date_path}.txt", force: true) { get_input }
-    create_file("lib/#{date_path}.rb", skip: true) { "" }
+    create_file("input/#{date_path}-test.txt", skip: true) { "" }
+    template("../templates/lib/tmpl.rb.tt", "lib/#{date_path}.rb")
     template("../templates/spec/tmpl_spec.rb.tt", "spec/#{date_path}_spec.rb")
   end
 
