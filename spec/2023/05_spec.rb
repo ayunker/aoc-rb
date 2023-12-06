@@ -1,7 +1,7 @@
 require "./lib/2023/05"
 
 RSpec.describe "Day 5: Title" do
-  let(:day_mod) { Object.const_get("Day05") }
+  let(:day_mod) { Object.const_get(:Day05) }
 
   context "test input" do
     describe "Part One" do
@@ -13,7 +13,7 @@ RSpec.describe "Day 5: Title" do
 
   describe "Part One" do
     it "is correct" do
-      expect(day_mod.part1).to eq false
+      expect(day_mod.part1).to eq 26273516
     end
   end
 

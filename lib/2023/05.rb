@@ -78,49 +78,54 @@ module Day05
   end
 
   def part1
-    parsed_input => { seeds:, maps: }
+    # parsed_input => { seeds:, maps: }
+    seeds = parsed_input[:seeds]
+    @maps = parsed_input[:maps]
 
-    map_seed_soil = Mapper.new(ranges_for(maps, "seed"))
-    map_soil_fertilizer = Mapper.new(ranges_for(maps, "soil"))
-    map_fertilizer_water = Mapper.new(ranges_for(maps, "fertilizer"))
-    map_water_light = Mapper.new(ranges_for(maps, "water"))
-    map_light_temperature = Mapper.new(ranges_for(maps, "light"))
-    map_temperature_humidity = Mapper.new(ranges_for(maps, "temperature"))
-    map_humidity_location = Mapper.new(ranges_for(maps, "humidity"))
+    # map_seed_soil = Mapper.new(ranges_for(maps, "seed"))
+    # map_soil_fertilizer = Mapper.new(ranges_for(maps, "soil"))
+    # map_fertilizer_water = Mapper.new(ranges_for(maps, "fertilizer"))
+    # map_water_light = Mapper.new(ranges_for(maps, "water"))
+    # map_light_temperature = Mapper.new(ranges_for(maps, "light"))
+    # map_temperature_humidity = Mapper.new(ranges_for(maps, "temperature"))
+    # map_humidity_location = Mapper.new(ranges_for(maps, "humidity"))
 
     seeds.map do |seed|
-      t1 = map_seed_soil[seed]
-      t2 = map_soil_fertilizer[t1]
-      t3 = map_fertilizer_water[t2]
-      t4 = map_water_light[t3]
-      t5 = map_light_temperature[t4]
-      t6 = map_temperature_humidity[t5]
-      map_humidity_location[t6]
+      location_for_seed(seed)
     end.min
   end
 
   def part2
     # parsed_input => { seeds:, maps: }
+    seeds = parsed_input[:seeds]
+    @maps = parsed_input[:maps]
 
-    map_seed_soil = Mapper.new(ranges_for(maps, "seed"))
-    map_soil_fertilizer = Mapper.new(ranges_for(maps, "soil"))
-    map_fertilizer_water = Mapper.new(ranges_for(maps, "fertilizer"))
-    map_water_light = Mapper.new(ranges_for(maps, "water"))
-    map_light_temperature = Mapper.new(ranges_for(maps, "light"))
-    map_temperature_humidity = Mapper.new(ranges_for(maps, "temperature"))
-    map_humidity_location = Mapper.new(ranges_for(maps, "humidity"))
+    # too_many = seeds.each_slice(2).to_a.map { |x| (x.first..(x.first + x.last)).to_a }.reduce(:|)
+    binding.pry
 
-    too_many = seeds.each_slice(2).to_a.map { |x| (x.first..(x.first + x.last)).to_a }.reduce(:|)
+    mins = []
+    s, e = intervals[9]
+    diff = (e - s) / 1000
+    locs = (0..1000).map do |x|
+      seed = s + (x * diff)
+      [seed, location_for_seed(seed)]
+    end
+    sorted_locs = locs.sort_by(&:last)
+    lowest_seed = sorted_locs[0].first
+    lower_bound = [lowest_seed - diff, s].max
+    upper_bound = [lowest_seed + diff, e].min
+    mins << (lower_bound..upper_bound).map { |x| location_for_seed(x) }.min
 
-    too_many.map do |seed|
-      t1 = map_seed_soil[seed]
-      t2 = map_soil_fertilizer[t1]
-      t3 = map_fertilizer_water[t2]
-      t4 = map_water_light[t3]
-      t5 = map_light_temperature[t4]
-      t6 = map_temperature_humidity[t5]
-      map_humidity_location[t6]
-    end.min
+    intervals = [[4188359137, 4225878710],
+      [3736161691, 3908507817],
+      [2590035450, 2656482041],
+      [209124047, 315702927],
+      [1404892542, 1434962533],
+      [3014689843, 3132116388],
+      [2169439765, 2395765257],
+      [1511958436, 1689302766],
+      [1822605035, 1873630145],
+      [382778843, 1206777369]]
   end
 
   def ranges_for(maps, from)
@@ -129,6 +134,30 @@ module Day05
       .map { |y| [y[:source_start], y[:destination_start], y[:length]] }
       .map { |x| Ranger.new(*x) }
   end
+
+  def location_for_seed(seed)
+    t1 = map_seed_soil[seed]
+    t2 = map_soil_fertilizer[t1]
+    t3 = map_fertilizer_water[t2]
+    t4 = map_water_light[t3]
+    t5 = map_light_temperature[t4]
+    t6 = map_temperature_humidity[t5]
+    map_humidity_location[t6]
+  end
+
+  def map_seed_soil = @map_seed_soil ||= Mapper.new(ranges_for(@maps, "seed"))
+
+  def map_soil_fertilizer = @map_soil_fertilizer ||= Mapper.new(ranges_for(@maps, "soil"))
+
+  def map_fertilizer_water = @map_fertilizer_water ||= Mapper.new(ranges_for(@maps, "fertilizer"))
+
+  def map_water_light = @map_water_light ||= Mapper.new(ranges_for(@maps, "water"))
+
+  def map_light_temperature = @map_light_temperature ||= Mapper.new(ranges_for(@maps, "light"))
+
+  def map_temperature_humidity = @map_temperature_humidity ||= Mapper.new(ranges_for(@maps, "temperature"))
+
+  def map_humidity_location = @map_humidity_location ||= Mapper.new(ranges_for(@maps, "humidity"))
 end
 
 # puts Day05.part2
