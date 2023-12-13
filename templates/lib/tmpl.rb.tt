@@ -9,9 +9,13 @@ module Day<%= day.to_s.rjust(2, "0") %>
     File.readlines("./input/<%= year %>/<%= day.to_s.rjust(2, "0") %>-test.txt", chomp: true)
   end
 
-  def part1
+  def parsed_input(test = false)
+    put = test ? test_input : input
   end
 
-  def part2
+  def part1(test = false)
+  end
+
+  def part2(test = false)
   end
 end
