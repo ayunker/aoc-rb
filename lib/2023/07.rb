@@ -135,5 +135,3 @@ module Day07
     end
   end
 end
-
-Day07.part2

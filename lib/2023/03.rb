@@ -26,7 +26,6 @@ module Day03
       end
 
       thing = nums_with_index.filter_map do |n, j|
-        puts "number: #{n}"
         n unless (neighbors(j, j + n.length, i) & SPECIAL_CHARS).empty?
       end
       product_numbers << thing unless thing.empty?
@@ -45,7 +44,6 @@ module Day03
       end
 
       nums_with_index.each do |n, j|
-        # puts "number: #{n}"
         neighboring_stars(j, j + n.length, i).each do |a, b|
           gears[[a, b]] << n
         end
