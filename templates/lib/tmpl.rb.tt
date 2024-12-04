@@ -1,3 +1,5 @@
+require "pry"
+
 module Day<%= day.to_s.rjust(2, "0") %>
   module_function
 
@@ -14,8 +16,10 @@ module Day<%= day.to_s.rjust(2, "0") %>
   end
 
   def part1(test = false)
+    parsed_input(test)
   end
 
   def part2(test = false)
+    parsed_input(test)
   end
 end
