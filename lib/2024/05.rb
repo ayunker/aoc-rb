@@ -23,9 +23,6 @@ module Day05
   def part1(test = false)
     orderings, updates = parsed_input(test)
 
-    # ahead = orderings.each_with_object({}) { |x, acc| (acc[x[0]] ||= []) << x[1] }
-    # behind = orderings.reverse.each_with_object({}) { |x, acc| (acc[x[0]] ||= []) << x[1] }
-
     updates.map do |u|
       right_order?(u, orderings) ? middle_page(u) : 0
     end.sum
@@ -34,16 +31,24 @@ module Day05
   def part2(test = false)
     orderings, updates = parsed_input(test)
 
+    ahead = orderings.each_with_object({}) { |x, acc| (acc[x[0]] ||= []) << x[1] }
+
     incorrects = updates.select { !right_order?(_1, orderings) }
     incorrects.map do |i|
-      correct_order = i.permutation.detect do |arrangement|
-        right_order?(arrangement, orderings)
-      end
+      correct_order = sorter(i, ahead)
       middle_page(correct_order)
     end.sum
   end
 
   # ---
+
+  def sorter(update, ahead)
+    update.sort do |a, b|
+      what = (ahead.key?(a) && ahead[a].include?(b)) ? -1 : 0
+      who = (ahead.key?(b) && ahead[b].include?(a)) ? 1 : 0
+      what + who
+    end
+  end
 
   def right_order?(update, orderings)
     orderings.all? do |first, second|
