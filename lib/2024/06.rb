@@ -71,13 +71,11 @@ module Day06
     end
 
     def next_spot
-      turn? ? turn_step : next_step
+      turn? ? loc : next_step
     end
   end
 
-  def part1(test = false)
-    grid, starting_point = parsed_input(test)
-    # starting_point = [5, 7]
+  def locations_visited(grid, starting_point)
     not_exited = true
     locations_visited = Set.new
     locations_visited << starting_point
@@ -87,14 +85,48 @@ module Day06
     while not_exited
       not_exited = !state.exit?
       locations_visited << state.loc
-      # old_state = state
       state = State[grid:, loc: state.next_spot, direction: state.next_dir]
     end
 
-    locations_visited.count
+    locations_visited
+  end
+
+  def part1(test = false)
+    grid, starting_point = parsed_input(test)
+
+    locations_visited(grid, starting_point).count
   end
 
   def part2(test = false)
-    parsed_input(test)
+    grid, starting_point = parsed_input(test)
+
+    lv = locations_visited(grid, starting_point)
+    lv.map do |x, y|
+      gg = grid.dup
+      gg[x, y] = "#"
+
+      cyclic?(gg, starting_point)
+    end.count { |x| x }
+  end
+
+  def cyclic?(grid, starting_point)
+    # aka locations_visited_redux
+    not_exited = true
+    locations_visited = Set.new
+    locations_visited << [starting_point, :up]
+
+    state = State[grid:, loc: starting_point, direction: :up]
+
+    while not_exited
+      not_exited = !state.exit?
+      locations_visited << [state.loc, state.direction]
+      state = State[grid:, loc: state.next_spot, direction: state.next_dir]
+
+      if not_exited && locations_visited.include?([state.loc, state.direction])
+        return true
+      end
+    end
+
+    false
   end
 end

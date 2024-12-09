@@ -10,7 +10,7 @@ RSpec.describe "Day 6: Title" do
       end
 
       it do
-        expect(day_mod.part2(true)).to eq false
+        expect(day_mod.part2(true)).to eq 6
       end
     end
   end
@@ -23,7 +23,7 @@ RSpec.describe "Day 6: Title" do
 
   describe "Part Two" do
     it do
-      expect(day_mod.part2).to eq false
+      expect(day_mod.part2).to eq 1946
     end
   end
 end
