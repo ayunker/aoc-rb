@@ -12,17 +12,18 @@ RSpec.describe "Day 9: Title" do
     describe "Part One" do
       it do
         expect(day_mod.part1(true)).to eq 1928
+        expect(day_mod.part1_alt).to eq 1928
       end
 
       it do
-        expect(day_mod.part2(true)).to eq false
+        expect(day_mod.part2(true)).to eq 2858
       end
     end
   end
 
   describe "Part One" do
     it do
-      expect(day_mod.part1).to eq false
+      expect(day_mod.part1).to eq 6446899523367
     end
   end
 

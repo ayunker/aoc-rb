@@ -13,7 +13,6 @@ module Day09
 
   def parsed_input(test = false)
     put = test ? test_input : input
-    binding.pry
     put.first.chars.map.with_index do |x, i|
       id_no = i.even? ? (i / 2).to_s : "."
       x.to_i.times.map { id_no }
@@ -21,10 +20,35 @@ module Day09
   end
 
   def part1(test = false)
-    put = parsed_input(test)
-    binding.pry
-    what = recurze(put, [])
-    what.map.with_index do |x, i|
+    disk_map = parsed_input(test)
+    acc = []
+
+    while still_to_go?(disk_map)
+      head = disk_map.shift
+
+      if head == "."
+        end_index = disk_map.rindex { _1 != "." }
+
+        next if end_index.nil?
+
+        end_value = disk_map[end_index]
+        disk_map[end_index] = "."
+        acc << end_value
+      else
+        acc << head
+      end
+    end
+
+    checksum(acc)
+  end
+
+  def still_to_go?(disk_map)
+    _, *rest = disk_map
+    rest.any?(".")
+  end
+
+  def checksum(arr)
+    arr.map.with_index do |x, i|
       x.to_i * i
     end.sum
   end
