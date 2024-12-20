@@ -48,11 +48,37 @@ module Day09
   end
 
   def part2(test = false)
-    put = parsed_input(test)
-    put.reverse!
-    chunked = put.chunk_while { |i, j| i == j }
-    tally = put.tally
+    disk = parsed_input(test)
+    tally = disk.tally
 
-    binding.pry
+    what = tally.each_with_object({}) do |(k, v), acc|
+      acc[k] = {size: v - 1, idx: disk.index(k)}
+    end
+    what.delete("0")
+    what.delete(".")
+
+    what.sort.reverse_each do |id_num, meta|
+      empty = disk.index(".")
+      # binding.pry if id_num == "7"
+      next if empty.nil?
+      loop do
+        break if empty >= meta[:idx]
+        # binding.pry if id_num == "7"
+        if disk[empty..empty + meta[:size]].all?(".")
+          # binding.pry if id_num == "7"
+
+          empty.upto(empty + meta[:size]).each { disk[_1] = id_num }
+          meta[:idx].upto(meta[:idx] + meta[:size]).each { disk[_1] = "." }
+          break
+        else
+          search = (empty + 1).upto(disk.size).select { disk[_1] == "." }.first
+          # binding.pry if id_num == "7"
+          break if search.nil?
+          empty = search
+        end
+      end
+    end
+
+    checksum(disk)
   end
 end
