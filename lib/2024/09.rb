@@ -20,31 +20,25 @@ module Day09
   end
 
   def part1(test = false)
-    disk_map = parsed_input(test)
-    acc = []
+    disk = parsed_input(test)
 
-    while still_to_go?(disk_map)
-      head = disk_map.shift
+    starter = 0
+    ender = disk.size
 
-      if head == "."
-        end_index = disk_map.rindex { _1 != "." }
-
-        next if end_index.nil?
-
-        end_value = disk_map[end_index]
-        disk_map[end_index] = "."
-        acc << end_value
-      else
-        acc << head
+    loop do
+      end_index = nil
+      if disk[starter] == "."
+        end_index = (ender - 1).downto(starter + 1).select { disk[_1] != "." }.first
+        break if end_index.nil?
+        disk[starter], disk[end_index] = disk[end_index], "."
       end
+
+      starter += 1
+      ender = end_index if end_index
+      break if starter >= ender
     end
 
-    checksum(acc)
-  end
-
-  def still_to_go?(disk_map)
-    _, *rest = disk_map
-    rest.any?(".")
+    checksum(disk)
   end
 
   def checksum(arr)
@@ -53,25 +47,12 @@ module Day09
     end.sum
   end
 
-  def recurze(disk_map, acc)
-    head, *rest = disk_map
-    if head == "."
-      end_index = rest.rindex { _1 != "." }
-
-      if end_index.nil?
-        return acc
-      end
-
-      end_value = rest[end_index]
-      rest[end_index] = "."
-
-      recurze(rest, acc.push(end_value))
-    else
-      recurze(rest, acc.push(head))
-    end
-  end
-
   def part2(test = false)
-    parsed_input(test)
+    put = parsed_input(test)
+    put.reverse!
+    chunked = put.chunk_while { |i, j| i == j }
+    tally = put.tally
+
+    binding.pry
   end
 end
