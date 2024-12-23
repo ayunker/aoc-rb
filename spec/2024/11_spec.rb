@@ -8,10 +8,6 @@ RSpec.describe "Day 11: Title" do
       it do
         expect(day_mod.part1(true)).to eq 55312
       end
-
-      it do
-        expect(day_mod.part2(true)).to eq false
-      end
     end
   end
 
